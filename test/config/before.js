@@ -7,7 +7,7 @@ const path = require('path');
 
 global.app = new Koa();
 global.request = require('supertest').agent(app.listen());
-const config = require(`../../config/env/${process.env.NODE_ENV || 'development'}`);
+global.config = require(`../../config/env/${process.env.NODE_ENV || 'development'}`);
 const port = config.port;
 const router = new Router();
 const apiFolderPath = path.join(__dirname, '../../api/controllers/');
