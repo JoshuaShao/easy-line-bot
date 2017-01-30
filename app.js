@@ -10,4 +10,4 @@ if (process.env.NODE_ENV !== 'production') {
   require('./config/babelPlugins');
 }
 
-require('./config/server');
+require('./config/bootstrap');
