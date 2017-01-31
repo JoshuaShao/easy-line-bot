@@ -24,7 +24,9 @@ dbConfigs.forEach((filename) => {
 });
 db.sequelize.sync({ force: config.db.force })
 .then(() => {
-  require('./initData');
+  if (config.initData) {
+    require('./initData');
+  }
 });
 
 app

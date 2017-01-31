@@ -15,6 +15,22 @@ module.exports = (sequelize, DataTypes) => {
         this.setDataValue('type', value.toLowerCase());
       },
     },
+    replyToken: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    sourceType: {
+      type: DataTypes.ENUM,
+      allowNull: false,
+      values: ['user', 'room', 'group'],
+    },
+    sourceId: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
   });
 
   return ReplyMessages;
