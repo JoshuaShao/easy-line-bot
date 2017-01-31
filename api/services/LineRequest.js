@@ -21,18 +21,10 @@ const self = module.exports = {
     return result;
   },
   createReplyRequest: (auth, replyMessage) => {
-    const options = {
-      method: 'POST',
-      uri: 'https://api.line.me/v2/bot/message/reply',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${auth.token}`,
-      },
-      body: {
-        replyToken: replyMessage.replyToken,
-        messages: self.createReplyMessageContents(replyMessage.message),
-      },
-      json: true,
+    let options = lineRequest(auth, 'reply');
+    options.body = {
+      replyToken: replyMessage.replyToken,
+      messages: self.createReplyMessageContents(replyMessage.message),
     };
 
     return request(options);
@@ -149,4 +141,42 @@ const self = module.exports = {
     }
     return content;
   },
+};
+
+const lineRequest = (auth, type, id) => {
+  let uri = 'https://api.line.me/v2/bot';
+
+  switch (type) {
+    case 'reply':
+      uri += '/message/reply'
+      break;
+    case 'push':
+      uri += '/message/push';
+      break;
+    case 'multicast':
+      uri += '/message/multicast';
+      break;
+    case 'content':
+      uri += `/message/${id}/content`;
+      break;
+    case 'profile':
+      uri += `/profile/${id}`;
+      break;
+    case 'leaveGroup':
+      uri += `/group/${id}/leave`;
+      break;
+    case 'leaveRoom':
+      uri += `/room/${id}/leave`;
+      break;
+  }
+
+  return {
+    method: 'POST',
+    uri: uri,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${auth.token}`,
+    },
+    json: true,
+  };
 };
